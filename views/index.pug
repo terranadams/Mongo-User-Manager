@@ -1,9 +1,6 @@
 doctype html
 html
     head
-        
-        link(rel='stylesheet', href='/styles/style.css')
-
          
     body
         h2 MongoDB User Manager
@@ -11,8 +8,8 @@ html
             button Add User
         p
         each user, index in users
-            div(class='myUsers')
-                div UserID: #{user.userId} 
+            div
+                div UserID: #{user.userID} 
                 div Firstname: #{user.first}
                 div Lastname: #{user.last}
                 div Email: #{user.email} 

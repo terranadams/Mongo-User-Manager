@@ -15,7 +15,7 @@ mongoose.connect(dbConnectionString, {
 });
 const database = mongoose.connection;
 database.once("open", () => {
-  console.log("db connected");
+  console.log("Database connected");
 });
 
 const userSchema = new mongoose.Schema({
@@ -30,7 +30,9 @@ const userSchema = new mongoose.Schema({
 const users = mongoose.model('users', userSchema)
 
 app.get('/', (req, res) => {
-    res.render('index', {users: users})
+    users.find({}, (err, data) => {
+            res.render('index', {users: data})
+    })
 })
 
 
