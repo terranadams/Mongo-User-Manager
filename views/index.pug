@@ -6,16 +6,17 @@ html
 
          
     body
-        h2 Simple User Manager
+        h2 MongoDB User Manager
         a(href='/create')
             button Add User
         p
         each user, index in users
             div(class='myUsers')
-                div.col-3 Name: #{user.name} 
-                div.col-3 UserID: #{user.userId} 
-                div.col-3 Email: #{user.email} 
-                div.col-3 Age: #{user.age} 
+                div UserID: #{user.userId} 
+                div Firstname: #{user.first}
+                div Lastname: #{user.last}
+                div Email: #{user.email} 
+                div Age: #{user.age} 
                 a(href='/users/' + index)
                     button Edit
                 form(action="/delete/" + index, method='post')

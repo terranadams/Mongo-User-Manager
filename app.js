@@ -13,7 +13,30 @@ mongoose.connect(dbConnectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-const users = mongoose.connection;
-users.once("open", () => {
+const database = mongoose.connection;
+database.once("open", () => {
   console.log("db connected");
 });
+
+const userSchema = new mongoose.Schema({
+    userID: String,
+    first: String,
+    last: String,
+    email: String,
+    age: Number
+})
+// Mongoose will look for the plural and lowercase version of the model
+// so User, user, Users and users:
+const users = mongoose.model('users', userSchema)
+
+app.get('/', (req, res) => {
+    res.render('index', {users: users})
+})
+
+
+
+
+
+app.listen(3000, () => {
+    console.log("Listening on port 3000.")
+})
