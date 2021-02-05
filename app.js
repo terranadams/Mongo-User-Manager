@@ -16,6 +16,8 @@ mongoose.connect(dbConnectionString, {
 const database = mongoose.connection;
 database.once("open", () => {
   console.log("Database connected");
+}, {
+    versionKey: false
 });
 
 const userSchema = new mongoose.Schema({
@@ -23,7 +25,7 @@ const userSchema = new mongoose.Schema({
     first: String,
     last: String,
     email: String,
-    age: Number
+    age: String
 })
 // Mongoose will look for the plural and lowercase version of the model
 // so User, user, Users and users:
