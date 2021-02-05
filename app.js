@@ -24,19 +24,37 @@ const userSchema = new mongoose.Schema({
     last: String,
     email: String,
     age: Number
+}, {
+    versionKey: false // This is a mongoose tool to keep track of document changes, look it up
 })
 // Mongoose will look for the plural and lowercase version of the model
 // so User, user, Users and users:
 const users = mongoose.model('users', userSchema)
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { // this callback gets our data from the database
     users.find({}, (err, data) => {
             res.render('index', {users: data})
     })
 })
 
+app.get('/create', (req, res) => {
+    res.render('form')
+})
 
+app.post('/create', (req, res) => {
+    const newUser = new users()
+    newUser.userID = req.body.userID
+    newUser.first = req.body.first
+    newUser.last = req.body.last
+    newUser.email = req.body.email
+    newUser.age = req.body.age
 
+    newUser.save((err, data) => { // this line saves to the database 
+        if (err) throw err
+        console.log(`New user save: ${data}`);
+        res.redirect('/')
+    })
+})
 
 
 app.listen(3000, () => {
