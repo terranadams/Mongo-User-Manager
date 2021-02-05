@@ -16,6 +16,6 @@ html
                 div Age: #{user.age} 
                 a(href='/users/' + index)
                     button Edit
-                form(action='/delete', method='post')
+                form(action='/delete/' + user.userID, method='post')
                     button(type='submit') Delete
                 p

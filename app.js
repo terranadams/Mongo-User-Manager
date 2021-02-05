@@ -56,8 +56,8 @@ app.post('/create', (req, res) => {
     })
 })
 
-app.post('/delete', (req, res) => {//CAN'T GET THIS TO WORK
-    let matchedUser = req.body.userID;
+app.post('/delete/:userID', (req, res) => {//CAN'T GET THIS TO WORK
+    let matchedUser = req.params.userID;
     console.log(matchedUser)
     users.findOneAndDelete({ userID: matchedUser }, (err, data) => {
         if (err) throw err
