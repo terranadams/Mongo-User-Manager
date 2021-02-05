@@ -24,8 +24,6 @@ const userSchema = new mongoose.Schema({
     last: String,
     email: String,
     age: Number
-}, {
-    versionKey: false // This is a mongoose tool to keep track of document changes, look it up
 })
 // Mongoose will look for the plural and lowercase version of the model
 // so User, user, Users and users:
@@ -56,6 +54,15 @@ app.post('/create', (req, res) => {
     })
 })
 
+app.post('/delete', (req, res) => {//CAN'T GET THIS TO WORK
+    let matchedUser = req.body.userID;
+    console.log(matchedUser)
+    users.findOneAndDelete({ userID: matchedUser }, (err, data) => {
+        if (err) throw err
+        console.log(`User removed: ${data}`)
+        res.redirect('/')
+    });
+});
 
 app.listen(3000, () => {
     console.log("Listening on port 3000.")
