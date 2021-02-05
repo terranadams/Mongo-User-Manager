@@ -56,9 +56,21 @@ app.post('/create', (req, res) => {
     })
 })
 
-app.post('/delete/:userID', (req, res) => {//CAN'T GET THIS TO WORK
+app.post('/edit/:userID', (req, res) => {
     let matchedUser = req.params.userID;
-    console.log(matchedUser)
+    users.findOneAndUpdate({ userID: matchedUser},{
+    userID: req.body.userID,
+    first: req.body.first,
+    last: req.body.last,
+    email: req.body.email,
+    age: req.body.age,
+    }, (err, data) => {
+        if (err) throw err
+    })
+})
+
+app.post('/delete/:userID', (req, res) => {
+    let matchedUser = req.params.userID;
     users.findOneAndDelete({ userID: matchedUser }, (err, data) => {
         if (err) throw err
         console.log(`User removed: ${data}`)

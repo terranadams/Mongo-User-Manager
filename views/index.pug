@@ -14,7 +14,7 @@ html
                 div Last name: #{user.last}
                 div Email: #{user.email} 
                 div Age: #{user.age} 
-                a(href='/users/' + index)
+                a(href='/edit/' + user.userID)
                     button Edit
                 form(action='/delete/' + user.userID, method='post')
                     button(type='submit') Delete
