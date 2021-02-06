@@ -7,15 +7,40 @@ html
         a(href='/create')
             button Add User
         p
-        each user, index in users
-            div
-                div UserID: #{user.userID} 
-                div First name: #{user.first}
-                div Last name: #{user.last}
-                div Email: #{user.email} 
-                div Age: #{user.age} 
-                a(href='/edit/' + user.userID)
-                    button Edit
-                form(action='/delete/' + user.userID, method='post')
-                    button(type='submit') Delete
-                p
+        p
+        table(style='', border='1')
+            tr
+                th UserID
+                th First name
+                th Last name
+                th Email
+                th Age
+                th Action
+            each user, index in users
+                tr
+                    td #{user.userID}
+                    td #{user.first} 
+                    td #{user.last}
+                    td #{user.email}
+                    td #{user.age}
+                    td
+                        a(href='/users/' + user.userID)
+                            button Edit
+                        form(action='/delete/' + user.userID, method='post')
+                            button(type='submit') Delete
+                    
+
+
+
+        //- each user, index in users
+        //-     div
+        //-         div UserID: #{user.userID} 
+        //-         div First name: #{user.first}
+        //-         div Last name: #{user.last}
+        //-         div Email: #{user.email} 
+        //-         div Age: #{user.age} 
+        //-         a(href='/edit/' + user.userID)
+        //-             button Edit
+        //-         form(action='/delete/' + user.userID, method='post')
+        //-             button(type='submit') Delete
+        //-         p
