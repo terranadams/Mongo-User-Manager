@@ -54,20 +54,27 @@ app.post('/create', (req, res) => {
         console.log(`New user save: ${data}`);
         res.redirect('/')
     })
-})
+}) 
+
+app.get('/edit/:userID', (req, res) => {// This lets us get data from the url
+    users.findOne({userID: req.params.userID}, (err, data) => {
+        res.render('editForm', {user: data})
+    })
+}) 
 
 app.post('/edit/:userID', (req, res) => {
-    console.log(req.params.userID)
-    // let matchedUser = req.params.userID;
-    // users.replaceOne({ userID: matchedUser},{
-    // userID: req.body.userID,
-    // first: req.body.first,
-    // last: req.body.last,
-    // email: req.body.email,
-    // age: req.body.age,
-    // }, (err, data) => {
-    //     if (err) throw err
-    // })
+    // console.log(req.params.userID)
+    let matchedUser = req.params.userID;
+    users.findOneAndUpdate({ userID: matchedUser},{
+    userID: req.body.userID,
+    first: req.body.first,
+    last: req.body.last,
+    email: req.body.email,
+    age: req.body.age,
+    }, (err, data) => {
+        if (err) throw err
+        res.redirect('/')
+    })
 })
 
 app.post('/delete/:userID', (req, res) => {

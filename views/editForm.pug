@@ -1,13 +1,16 @@
 html
     head
     body
-        form(method='post', action='/edit/' + index)
+        form(method='post', action='/edit/' + user.userID)
             div
-                label(for='name') Name: 
-                input(id='name', name='name', value=user.name)
+                label(for='userID') UserID: 
+                input(id='userID', name='userID', value=user.userID)
             div
-                label(for='userId') UserID: 
-                input(id='userId', name='userId', value=user.userId)
+                label(for='first') First name: 
+                input(id='first', name='first', value=user.first)
+            div
+                label(for='last') Last name: 
+                input(id='last', name='last', value=user.last)
             div
                 label(for='email') Email: 
                 input(id='email', name='email', value=user.email)
