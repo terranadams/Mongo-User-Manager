@@ -13,13 +13,12 @@ mongoose.connect(dbConnectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.set('useFindAndModify', false) // We get warnings without this for some reason.
 const database = mongoose.connection;
 database.once("open", () => {
   console.log("Database connected");
-}, {
-    versionKey: false
 });
-
+// EVERYTHING ABOVE THIS LINE IS JUST BOILERPLATE
 const userSchema = new mongoose.Schema({
     userID: String,
     first: String,
@@ -27,44 +26,50 @@ const userSchema = new mongoose.Schema({
     email: String,
     age: String
 })
-// Mongoose will look for the plural and lowercase version of the model
-// so User, user, Users and users:
 const users = mongoose.model('users', userSchema)
-
-app.get('/', (req, res) => { // this callback gets our data from the database
-    users.find({}, (err, data) => {
+// Lines 22-29 represent and define the structure of our 'users' collection.
+app.get('/', (req, res) => { 
+    users.find({}, (err, data) => { // This callback gets our data from the database
             res.render('index', {users: data})
     })
 })
 
 app.get('/create', (req, res) => {
-    res.render('form')
+    res.render('form') // this renders the form for adding users, then runs the 'post' on line 41 when submitted.
 })
 
 app.post('/create', (req, res) => {
-    const newUser = new users()
+    const newUser = new users() // We capture the data from our form above, then save it on line 49.
     newUser.userID = req.body.userID
     newUser.first = req.body.first
     newUser.last = req.body.last
     newUser.email = req.body.email
     newUser.age = req.body.age
 
-    newUser.save((err, data) => { // this line saves to the database 
+    newUser.save((err, data) => { // this line saves to the database, then returns you to the home screen in the callback.
         if (err) throw err
-        console.log(`New user save: ${data}`);
         res.redirect('/')
     })
 }) 
 
-app.get('/edit/:userID', (req, res) => {// This lets us get data from the url
+/* The difference between the form.pug page and editForm.pug page is when we submit posts from each of them, we have 
+    different app.post() functions that run based on the action they send. On form.pug, '/create' merely adds another 
+    user to the DB, while the edit button for each user loads its own "editForm.pug" pre-populated with its own data.
+    On that page, when we submit the post method with "/edit/ + userID", using params, the data gets captured, and 
+    saves that document's new info, which uses the findOneAndUpdate() to save it to the DB.
+*/
+app.get('/edit/:userID', (req, res) => {
     users.findOne({userID: req.params.userID}, (err, data) => {
-        res.render('editForm', {user: data})
+        res.render('editForm', {user: data}) 
     })
 }) 
-
 app.post('/edit/:userID', (req, res) => {
     // console.log(req.params.userID)
     let matchedUser = req.params.userID;
+    /* we must create the custom post request on the submit button in editForm.pug and send that specific userID back
+    using the params tool. The first arg is the doc to match (using params), the second is the new info to save. The third 
+    argument is a callback that then re-routes you to the home page when the fineOneAndUpdate() method is finished.
+    */
     users.findOneAndUpdate({ userID: matchedUser},{
     userID: req.body.userID,
     first: req.body.first,
@@ -77,10 +82,13 @@ app.post('/edit/:userID', (req, res) => {
     })
 })
 
+/* The '/delete' action doesn't need a get request because it doesn't take you to a new page...
+    It does, however, require some sort of data to know which doc to run the findOneAndDelete() method on.
+    That's why we use params to send back which one should be matched and deleted.
+*/
 app.post('/delete/:userID', (req, res) => {
-    // console.log(req.params.userID)
     let matchedUser = req.params.userID;
-    users.findOneAndDelete({ userID: matchedUser }, (err, data) => {
+    users.findOneAndDelete({ userID: matchedUser }, (err, data) => { 
         if (err) throw err
         console.log(`User removed: ${data}`)
         res.redirect('/')
