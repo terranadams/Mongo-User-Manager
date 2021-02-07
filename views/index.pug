@@ -16,7 +16,7 @@ html
                 th Email
                 th Age
                 th Action
-            each user, index in users
+            each user in users
                 tr
                     td #{user.userID}
                     td #{user.first} 
@@ -25,6 +25,7 @@ html
                     td #{user.age}
                     td
                         a(href='/edit/' + user.userID)
+                            //- This anchor tag is actually a 'get' request, and the action is the href url.
                             button Edit
                         form(action='/delete/' + user.userID, method='post')
                             button(type='submit') Delete
