@@ -6,7 +6,14 @@ html
         h2 MongoDB User Manager
         a(href='/create')
             button Add User
+        span
+            a(href='/')
+                button Full List
         p
+        span
+            form(action='/search', method='post')
+                input(type='text', id='search', name='search')
+                button(type='submit') Search
         p
         table(style='', border='1')
             tr

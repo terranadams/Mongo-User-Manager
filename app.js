@@ -28,12 +28,24 @@ const userSchema = new mongoose.Schema({
 })
 const users = mongoose.model('users', userSchema)
 // Lines 22-29 represent and define the structure of our 'users' collection.
-app.get('/', (req, res) => { 
+app.get('/', (req, res) => {
     users.find({}, (err, data) => { // This callback gets our data from the database
             res.render('index', {users: data})
+    })  
+})   
+
+app.post('/search', (req, res) => {
+    let search = req.body.search.toLowerCase()
+    users.find({}, (err, data) => {
+        let filteredList = data.filter(x => {
+            let first = x.first.toLowerCase()
+            let last = x.last.toLowerCase()
+            return first == search || last == search
+        })
+        res.render('index', {users: filteredList})
     })
 })
-
+ 
 app.get('/create', (req, res) => {
     res.render('form') // this renders the form for adding users, then runs the 'post' on line 41 when submitted.
 })
